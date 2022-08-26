@@ -14,9 +14,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  await deploy("Greeter", {
+  await deploy("Messenger", {
     from: deployer,
-    args: ["hello world"],
+    args: ["GM Blockstar!!"],
     log: true,
   });
 
@@ -65,4 +65,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   */
 };
 
-module.exports.tags = ["Greeter", "Storage", "SupportToken"];
+module.exports.tags = ["Messenger", "Storage", "SupportToken"];

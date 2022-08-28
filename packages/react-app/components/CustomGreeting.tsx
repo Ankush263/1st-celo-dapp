@@ -24,7 +24,8 @@ function CustomGreeting() {
     console.log(msg)
   }
 
-  const setGreeting = () => {
+  const setGreeting = async () => {
+    await contract.setGreeting(greet)
     console.log("set greet")
   }
 

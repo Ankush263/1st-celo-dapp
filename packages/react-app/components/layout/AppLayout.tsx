@@ -2,6 +2,7 @@ import * as React from "react";
 import Meta from "../meta/Meta";
 import Footer from "./Footer";
 import { Header } from "./Header";
+import CustomGreeting from "../CustomGreeting";
 
 interface Props {
   title: string;
@@ -14,7 +15,8 @@ export default function AppLayout({ title, description, children }: Props) {
     <div>
       <Header />
       <Meta title={title} description={description} />
-      {children}
+      {/* {children} */}
+      <CustomGreeting />
       <Footer />
     </div>
   );

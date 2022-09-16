@@ -2,7 +2,7 @@ import Button from '@mui/material/Button'
 import React, { useState } from 'react'
 import TextField from '@mui/material/TextField';
 import { ethers } from "ethers";
-import contractData from "../../hardhat/artifacts/contracts/CustomGreeting.sol/CustomGreeting.json";
+import contractData from "@celo-composer/hardhat/artifacts/contracts/CustomGreeting.sol/CustomGreeting.json";
 
 function CustomGreeting() {
   const [greet, setGreet] = useState('')

@@ -15,9 +15,9 @@ export default function AppLayout({ title, description, children }: Props) {
     <div>
       <Header />
       <Meta title={title} description={description} />
-      {/* {children} */}
-      <CustomGreeting />
-      <Footer />
+      {children}
+    <Footer />
+      {/* <CustomGreeting /> */}
     </div>
   );
 }

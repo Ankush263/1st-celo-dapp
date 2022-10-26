@@ -151,12 +151,17 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import SignInPage from "./components/SignInPage";
+import FirstPage from './components/CELO-HACK/FirstPage';
+import RescueDetail from './components/CELO-HACK/RescueDetail';
+import PaymentComplete from './components/CELO-HACK/PaymentComplete';
 
 
 const Home: NextPage = () => {
   return (
     <div className="app">
-      <SignInPage />
+      {/* <FirstPage /> */}
+      {/* <RescueDetail /> */}
+      <PaymentComplete />
     </div>
   )
 }

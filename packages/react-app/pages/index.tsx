@@ -154,14 +154,16 @@ import SignInPage from "./components/SignInPage";
 import FirstPage from './components/CELO-HACK/FirstPage';
 import RescueDetail from './components/CELO-HACK/RescueDetail';
 import PaymentComplete from './components/CELO-HACK/PaymentComplete';
+import DonateDetails from './components/CELO-HACK/DonateDetails';
 
 
 const Home: NextPage = () => {
   return (
     <div className="app">
-      {/* <FirstPage /> */}
+      <FirstPage />
       {/* <RescueDetail /> */}
-      <PaymentComplete />
+      {/* <PaymentComplete /> */}
+      {/* <DonateDetails /> */}
     </div>
   )
 }

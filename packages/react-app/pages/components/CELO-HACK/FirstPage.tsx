@@ -1,7 +1,21 @@
-import React from 'react'
-import { Button } from '@mui/material'
+import React, { useState } from 'react';
+import { Button } from '@mui/material';
+import Link from 'next/link';
 
 function FirstPage() {
+
+  const [donate, setDonate] = useState(false)
+  const [resque, setResque] = useState(false)
+
+  const donateClick = () => {
+    setDonate(true)
+    setResque(false)
+  }
+
+  const resqueClick = () => {
+    setResque(true)
+    setDonate(false)
+  }
 
   const styles = {
     page: `w-screen h-screen flex flex-col justify-between items-center max-w-screen-sm bg-[url('/images2/background.png')]`,
@@ -29,13 +43,13 @@ function FirstPage() {
           </div>
           <div className="w-7/12 h-3/6 flex justify-around items-start">
             <div className="flex flex-col justify-center items-center">
-              <button className={styles.btn}>
+              <button className={styles.btn} onClick={donateClick}>
                 <img src="/images2/Fundraising.png" alt="/" className='w-full h-full rounded-full' />
               </button>
               <span className='text-xs text-gray-400 font-bold'>Donate</span>
             </div>
             <div className="flex flex-col justify-center items-center">
-              <button className={styles.btn}>
+              <button className={styles.btn} onClick={resqueClick}>
                 <img src="/images2/delivery.png" alt="/" className='w-full h-full rounded-full' />
               </button>
               <span className='text-xs text-gray-400 font-bold'>Rescuer</span>
@@ -47,9 +61,25 @@ function FirstPage() {
             <img src="/images2/confuse.png" className='w-full h-full' alt="/" />
           </div>
           <div className={styles.bigbtn}>
-            <Button variant='contained' className='w-9/12'>
-              <span className='capitalize'>Need some food / Resque?</span>
-            </Button>
+            {
+              donate 
+              
+              ? 
+
+              <Link href='/components/CELO-HACK/DonateDetails'>
+                <Button variant='contained' className='w-9/12'>
+                  <span className='capitalize'>Donate some food</span>
+                </Button> 
+              </Link>
+              
+              : 
+
+              <Link href='/components/CELO-HACK/RescueDetail'>
+                <Button variant='contained' className='w-9/12'>
+                  <span className='capitalize'>Resque?</span>
+                </Button>
+              </Link>
+            }
           </div>
         </div>
       </div>
@@ -58,3 +88,7 @@ function FirstPage() {
 }
 
 export default FirstPage
+
+
+
+//afCFgG2xkaAgIap6X2VGCWE5a6ws0nt7

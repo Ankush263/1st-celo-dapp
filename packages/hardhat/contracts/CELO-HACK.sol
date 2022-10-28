@@ -89,6 +89,7 @@ contract MyToken is ERC721, ERC721URIStorage {
     function getRescuePickup(uint _rescueId) public {
         require(owner == msg.sender, "Only owner can call this function");  // Here Id starts from (0 -> infinity)
         require(AllRescueDetails[_rescueId].rescueRecieved == false);
+        require(AllRescueDetails[_rescueId].rescuePickup == false);
         require(AllRescueDetails[_rescueId].rescueClosed == false);
 
         AllRescueDetails[_rescueId].rescuePickup = true;
@@ -98,6 +99,7 @@ contract MyToken is ERC721, ERC721URIStorage {
         require(owner == msg.sender, "Only owner can call this function");
         require(AllRescueDetails[_rescueId].rescuePickup == true);
         require(AllRescueDetails[_rescueId].rescueClosed == false);
+        require(AllRescueDetails[_rescueId].rescueRecieved == false);
 
         AllRescueDetails[_rescueId].rescueRecieved = true;
     }
@@ -106,6 +108,7 @@ contract MyToken is ERC721, ERC721URIStorage {
         require(owner == msg.sender, "Only owner can call this function");
         require(AllRescueDetails[_rescueId].rescuePickup == true);
         require(AllRescueDetails[_rescueId].rescueRecieved == true);
+        require(AllRescueDetails[_rescueId].rescueClosed == false);
 
         AllRescueDetails[_rescueId].rescueClosed = true;
     }
@@ -199,5 +202,30 @@ contract MyToken is ERC721, ERC721URIStorage {
         AllDonationDetails[_donationId].donationClosed = true;
     }
 
+    function getAllMyDonationDetails() public view returns(DonationDetails[] memory) {
+        uint totalDonationCount = donationCount;
+        uint donation = 0;
+        uint currentIndex = 0;
+
+        for(uint i = 0; i < totalDonationCount; i++) {
+            if(AllDonationDetails[i].donarAddress == msg.sender) {
+                donation++;
+            }
+        }
+
+        DonationDetails[] memory myDonar = new DonationDetails[](donation);
+        for(uint i = 0; i < totalDonationCount; i++) {
+            if(AllDonationDetails[i].donarAddress == msg.sender) {
+                myDonar[currentIndex] = AllDonationDetails[i];
+                currentIndex++;
+            }
+        }
+
+        return myDonar;
+    }
+
+    // -------------------------All Owner Functions---------------------------------------------
+
+    
 
 }

@@ -11,40 +11,33 @@ contract MyToken is ERC721, ERC721URIStorage {
     struct RescueDetails {
         uint rescueId;
         address rescuerAddress;
-        string language;
-        string name;
-        uint numOfPeople;
-        string ageGroup;
-        string reason;
-        string location;
-        string phoneNo;
         bool rescuePickup;
         bool rescueRecieved;
         bool rescueClosed;
     }
 
-    struct DonationDetails {
-        uint donationId;
-        address donarAddress;
-        string language;
-        string name;
-        string location;
-        string phoneNo;
-        string pickupTime;
-        string pickupDay;
-        string foodItems;
-        uint quantity;
-        bool NFTreceived;
-        bool donationPickup;
-        bool donationReceived;
-        bool donationClosed;
-    }
+    // struct DonationDetails {
+    //     uint donationId;
+    //     address donarAddress;
+    //     string language;
+    //     string name;
+    //     string location;
+    //     string phoneNo;
+    //     string pickupTime;
+    //     string pickupDay;
+    //     string foodItems;
+    //     uint quantity;
+    //     bool NFTreceived;
+    //     bool donationPickup;
+    //     bool donationReceived;
+    //     bool donationClosed;
+    // }
 
     uint rescueCount = 0;
     uint donationCount = 0;
 
     RescueDetails[] public AllRescueDetails;
-    DonationDetails[] public AllDonationDetails;
+    // DonationDetails[] public AllDonationDetails;
 
     Counters.Counter private _tokenIdCounter;
     address payable public owner;
@@ -81,30 +74,19 @@ contract MyToken is ERC721, ERC721URIStorage {
 
     function SendRescueRequest
     (
-        string memory _language, 
-        string memory _name, 
-        uint _numOfPeople, 
-        string memory _ageGroup, 
-        string memory _reason,
-        string memory _location,
-        string memory _phoneNo
+        string memory _rescueInfo
     ) public {
 
         RescueDetails memory tempRescueDetails;
 
-        tempRescueDetails.language = _language;
-        tempRescueDetails.rescuerAddress = msg.sender;
         tempRescueDetails.rescueId = rescueCount;
-        tempRescueDetails.name = _name;
-        tempRescueDetails.numOfPeople = _numOfPeople;
-        tempRescueDetails.ageGroup = _ageGroup;
-        tempRescueDetails.reason = _reason;
-        tempRescueDetails.location = _location;
-        tempRescueDetails.phoneNo = _phoneNo;
+        tempRescueDetails.rescuerAddress = msg.sender;
 
-        rescueCount++;
+        _safeMint(msg.sender, rescueCount);
+        _setTokenURI(rescueCount, _rescueInfo);
 
         AllRescueDetails.push(tempRescueDetails);
+        rescueCount++;
     }
 
     function getAllRescueRequest() public view returns(RescueDetails[] memory) {
@@ -161,19 +143,32 @@ contract MyToken is ERC721, ERC721URIStorage {
 
     // -------------------------All Donation Functions---------------------------------------------
 
-    function SendDonationRequest
-    (
-        string memory _language, 
-        string memory _name, 
-        string memory _phoneNo,
-        string memory _location,
-        string memory _pickupTime,
-        string memory _pickupDay,
-        string memory _foodItems,
-        uint _quentity
-    )public {
+    // function SendDonationRequest
+    // (
+    //     string memory _language, 
+    //     string memory _name, 
+    //     string memory _phoneNo,
+    //     string memory _location,
+    //     string memory _pickupTime,
+    //     string memory _pickupDay,
+    //     string memory _foodItems,
+    //     uint _quantity
+    // )public {
+    //     DonationDetails memory tempDonationDetails;
 
-    }
+    //     tempDonationDetails.language = _language;
+    //     tempDonationDetails.name = _name;
+    //     tempDonationDetails.phoneNo = _phoneNo;
+    //     tempDonationDetails.location = _location;
+    //     tempDonationDetails.pickupTime = _pickupTime;
+    //     tempDonationDetails.pickupDay = _pickupDay;
+    //     tempDonationDetails.foodItems = _foodItems;
+    //     tempDonationDetails.quantity = _quantity;
+
+    //     donationCount++;
+
+    //     AllDonationDetails.push(tempDonationDetails);
+    // }
 
 
 }

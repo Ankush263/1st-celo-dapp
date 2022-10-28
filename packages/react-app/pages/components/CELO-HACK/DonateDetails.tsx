@@ -117,6 +117,14 @@ function DonateDetails() {
             <input type="text" placeholder='123 Road St, New City' className={styles.inputbg} />
           </div>
         </div>
+
+        <div className={styles.box}>
+          <span className={styles.text}>Phone No(with country code):</span>
+          <div className={styles.input}>
+            <input type="tel" placeholder='123-456-7890' className={styles.inputbg} required/>
+          </div>
+        </div>
+
         <div className={styles.box}>
           <span className={styles.text}>Pickup Time:</span>
           <div className={styles.input}>

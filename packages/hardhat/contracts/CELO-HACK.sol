@@ -16,28 +16,20 @@ contract MyToken is ERC721, ERC721URIStorage {
         bool rescueClosed;
     }
 
-    // struct DonationDetails {
-    //     uint donationId;
-    //     address donarAddress;
-    //     string language;
-    //     string name;
-    //     string location;
-    //     string phoneNo;
-    //     string pickupTime;
-    //     string pickupDay;
-    //     string foodItems;
-    //     uint quantity;
-    //     bool NFTreceived;
-    //     bool donationPickup;
-    //     bool donationReceived;
-    //     bool donationClosed;
-    // }
+    struct DonationDetails {
+        uint donationId;
+        address donarAddress;
+        bool donationPickup;
+        bool NFTreceived;
+        bool donationReceived;
+        bool donationClosed;
+    }
 
     uint rescueCount = 0;
     uint donationCount = 0;
 
     RescueDetails[] public AllRescueDetails;
-    // DonationDetails[] public AllDonationDetails;
+    DonationDetails[] public AllDonationDetails;
 
     Counters.Counter private _tokenIdCounter;
     address payable public owner;
@@ -75,6 +67,7 @@ contract MyToken is ERC721, ERC721URIStorage {
     function SendRescueRequest
     (
         string memory _rescueInfo
+
     ) public {
 
         RescueDetails memory tempRescueDetails;
@@ -140,35 +133,71 @@ contract MyToken is ERC721, ERC721URIStorage {
 
     }
 
-
     // -------------------------All Donation Functions---------------------------------------------
 
-    // function SendDonationRequest
-    // (
-    //     string memory _language, 
-    //     string memory _name, 
-    //     string memory _phoneNo,
-    //     string memory _location,
-    //     string memory _pickupTime,
-    //     string memory _pickupDay,
-    //     string memory _foodItems,
-    //     uint _quantity
-    // )public {
-    //     DonationDetails memory tempDonationDetails;
+    function SendDonationRequest
+    (
+        string memory _donationInfo
 
-    //     tempDonationDetails.language = _language;
-    //     tempDonationDetails.name = _name;
-    //     tempDonationDetails.phoneNo = _phoneNo;
-    //     tempDonationDetails.location = _location;
-    //     tempDonationDetails.pickupTime = _pickupTime;
-    //     tempDonationDetails.pickupDay = _pickupDay;
-    //     tempDonationDetails.foodItems = _foodItems;
-    //     tempDonationDetails.quantity = _quantity;
+    )public {
+        
+        DonationDetails memory tempDonationDetails;
 
-    //     donationCount++;
+        tempDonationDetails.donationId = donationCount;
+        tempDonationDetails.donarAddress = msg.sender;
 
-    //     AllDonationDetails.push(tempDonationDetails);
-    // }
+        _safeMint(msg.sender, donationCount);
+        _setTokenURI(donationCount, _donationInfo);
+        _transfer(msg.sender, owner, donationCount);
+
+        AllDonationDetails.push(tempDonationDetails);
+        donationCount++;
+    }
+
+    function getAllDonationRequest() public view returns(DonationDetails[] memory) {
+        return AllDonationDetails;
+    }
+
+    function getDonationPickup(uint _donationId) public {
+        require(owner == msg.sender, "Only owner can call this function");
+        require(AllDonationDetails[_donationId].NFTreceived == false);
+        require(AllDonationDetails[_donationId].donationReceived == false);
+        require(AllDonationDetails[_donationId].donationClosed == false);
+        require(AllDonationDetails[_donationId].donationPickup == false);
+
+        AllDonationDetails[_donationId].donationPickup = true;
+    }
+
+    function giveNFTtoDonar(uint _donationId) public {
+        require(owner == msg.sender, "Only owner can call this function");
+        require(AllDonationDetails[_donationId].donationPickup == true);
+        require(AllDonationDetails[_donationId].NFTreceived == false);
+        require(AllDonationDetails[_donationId].donationReceived == false);
+        require(AllDonationDetails[_donationId].donationClosed == false);
+
+        _transfer(msg.sender, AllDonationDetails[_donationId].donarAddress, _donationId);
+        AllDonationDetails[_donationId].NFTreceived = true;
+    }
+
+    function getDonationReceived(uint _donationId) public {
+        require(owner == msg.sender, "Only owner can call this function");
+        require(AllDonationDetails[_donationId].donationPickup == true);
+        require(AllDonationDetails[_donationId].NFTreceived == true);
+        require(AllDonationDetails[_donationId].donationReceived == false);
+        require(AllDonationDetails[_donationId].donationClosed == false);
+
+        AllDonationDetails[_donationId].donationReceived = true;
+    }
+
+    function getDonationClosed(uint _donationId) public {
+        require(owner == msg.sender, "Only owner can call this function");
+        require(AllDonationDetails[_donationId].donationPickup == true);
+        require(AllDonationDetails[_donationId].NFTreceived == true);
+        require(AllDonationDetails[_donationId].donationReceived == true);
+        require(AllDonationDetails[_donationId].donationClosed == false);
+
+        AllDonationDetails[_donationId].donationClosed = true;
+    }
 
 
 }

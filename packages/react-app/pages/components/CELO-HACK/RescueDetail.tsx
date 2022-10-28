@@ -133,9 +133,9 @@ function RescueDetail() {
         </div>
 
         <div className={styles.box}>
-          <span className={styles.text}>More info:</span>
+          <span className={styles.text}>Phone No(with country code):</span>
           <div className={styles.input}>
-            <input type="text" placeholder='enter' className={styles.inputbg}/>
+            <input type="tel" placeholder='123-456-7890' className={styles.inputbg} required/>
           </div>
         </div>
 

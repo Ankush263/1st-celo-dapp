@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import Link from 'next/link';
 
@@ -15,6 +15,27 @@ function FirstPage() {
   const resqueClick = () => {
     setResque(true)
     setDonate(false)
+  }
+
+  const connectWallet = async () => {
+    try {
+      const chainid = await window.ethereum.request({ method: 'eth_chainId' })
+
+      if(chainid !== '0xaef3') {
+
+        await window.ethereum.request({   // This gives alert Incorrect network!, switch into Alfajores
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0xaef3' }],
+        })
+      }
+
+      if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.request({ method: 'eth_requestAccounts' });
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const styles = {
@@ -68,7 +89,7 @@ function FirstPage() {
 
               <Link href='/components/CELO-HACK/DonateDetails'>
                 <Button variant='contained' className='w-9/12'>
-                  <span className='capitalize'>Donate some food</span>
+                  <span className='capitalize' onClick={connectWallet}>Donate some food</span>
                 </Button> 
               </Link>
               
@@ -76,7 +97,7 @@ function FirstPage() {
 
               <Link href='/components/CELO-HACK/RescueDetail'>
                 <Button variant='contained' className='w-9/12'>
-                  <span className='capitalize'>Resque?</span>
+                  <span className='capitalize' onClick={connectWallet}>Resque?</span>
                 </Button>
               </Link>
             }

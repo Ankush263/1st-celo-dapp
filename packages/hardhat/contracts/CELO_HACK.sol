@@ -10,6 +10,7 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
 
     struct RescueDetails {
         uint rescueId;
+        address owner;
         address rescuerAddress;
         bool rescuePickup;
         bool rescueRecieved;
@@ -18,6 +19,7 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
 
     struct DonationDetails {
         uint donationId;
+        address owner;
         address donarAddress;
         bool donationPickup;
         bool NFTreceived;
@@ -73,6 +75,7 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
         RescueDetails memory tempRescueDetails;
 
         tempRescueDetails.rescueId = rescueCount;
+        tempRescueDetails.owner = owner;
         tempRescueDetails.rescuerAddress = msg.sender;
 
         _safeMint(msg.sender, rescueCount);
@@ -147,6 +150,7 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
         DonationDetails memory tempDonationDetails;
 
         tempDonationDetails.donationId = donationCount;
+        tempDonationDetails.owner = owner;
         tempDonationDetails.donarAddress = msg.sender;
 
         _safeMint(msg.sender, donationCount);

@@ -1,8 +1,80 @@
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
+import { uploadRescueJSONToIPFS, uploadFileToIPFS } from '../../../utils/pinata';
+import { ethers } from 'ethers';
+import CELO from '../../../../hardhat/artifacts/contracts/CELO_HACK.sol/CELO_HACK.json';
 
 
 function RescueDetail() {
+
+  const deployAddress = "0x6675d527e14ABb3b909775CC2e13E9081257485A"
+
+  const [rescueDesc, setRescueDesc] = useState({
+    language: '',
+    name: '',
+    numberOfPeople: '',
+    ageGroup: '',
+    reason: '',
+    location: '',
+    phoneNo: '',
+    moreInfo: '',
+  })
+  const [message, updateMessage] = useState('')
+  const [disabled, setDisabled] = useState(false)
+
+  const uploadMetadataToIPFS = async () => {
+    const { language, name, numberOfPeople, ageGroup, reason, location, phoneNo, moreInfo } = rescueDesc
+
+    if(!language || !name || !numberOfPeople || !ageGroup || !reason || !location || !phoneNo || !moreInfo) {
+      return;
+    }
+
+    const nftJSON = {
+      language, name, numberOfPeople, ageGroup, reason, location, phoneNo, moreInfo
+    }
+
+    try {
+
+      const response = await uploadRescueJSONToIPFS(nftJSON)
+
+      if(response.success === true) {
+        return response.pinataURL
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const submit = async (e) => {
+
+    // setDisabled(true)
+    e.preventDefault()
+
+    try {
+      
+      // const metadataURL = await uploadMetadataToIPFS()
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      updateMessage("Please wait.. sending your request(upto 2 mins)")
+      const contract = new ethers.Contract(deployAddress, CELO.abi, signer)
+
+      // let transaction = await contract.SendRescueRequest(metadataURL)
+      // await transaction.wait()
+      // console.log(transaction)
+
+      console.log(await contract.owner(), await signer.getAddress())
+
+      alert("Successfully send the request😀")
+      // setDisabled(false)
+      updateMessage('')
+
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const styles = {
     page: `w-screen max-w-screen-sm h-screen flex flex-col justify-start items-center`,
@@ -21,9 +93,14 @@ function RescueDetail() {
         </div>
 
         <div className={styles.box}>
-          <span className={styles.text}>Languages:</span>
+          <span className={styles.text}>Languages:*</span>
           <div className={styles.input}>
-            <select data-placeholder="Choose a Language..." className={styles.inputbg}>
+            <select 
+              data-placeholder="Choose a Language..." 
+              onChange={e => setRescueDesc({...rescueDesc, language: e.target.value})} 
+              value={rescueDesc.language} 
+              className={styles.inputbg}
+            >
               <option value="AF">Afrikaans</option>
               <option value="SQ">Albanian</option>
               <option value="AR">Arabic</option>
@@ -100,42 +177,92 @@ function RescueDetail() {
           </div>
         </div>
         <div className={styles.box}>
-          <span className={styles.text}>Your name:</span>
+          <span className={styles.text}>Your name:*</span>
           <div className={styles.input}>
-            <input type="text" placeholder='enter your name' className={styles.inputbg}/>
+            <input 
+              type="text" 
+              placeholder='enter your name' 
+              className={styles.inputbg}
+              onChange={e => setRescueDesc({...rescueDesc, name: e.target.value})}
+              value={rescueDesc.name}
+            />
           </div>
         </div>
         <div className={styles.box}>
-          <span className={styles.text}>How many people?</span>
+          <span className={styles.text}>How many people?*</span>
           <div className={styles.input}>
-            <input type="number" placeholder='select' className={styles.inputbg} />
+            <input 
+              type="number" 
+              placeholder='select' 
+              className={styles.inputbg} 
+              onChange={e => setRescueDesc({...rescueDesc, numberOfPeople: e.target.value})}
+              value={rescueDesc.numberOfPeople}
+            />
           </div>
         </div>
         <div className={styles.box}>
-          <span className={styles.text}>Age group</span>
+          <span className={styles.text}>Age group*</span>
           <div className={styles.input}>
-            <input type="text" placeholder='enter' className={styles.inputbg}/>
+            <input 
+              type="text" 
+              placeholder='enter' 
+              className={styles.inputbg}
+              onChange={e => setRescueDesc({...rescueDesc, ageGroup: e.target.value})}
+              value={rescueDesc.ageGroup}
+            />
           </div>
         </div>
 
         <div className={styles.box}>
-          <span className={styles.text}>Reason for rescue:</span>
+          <span className={styles.text}>Reason for rescue:*</span>
           <div className={styles.input}>
-            <input type="text" placeholder='enter' className={styles.inputbg}/>
+            <input 
+              type="text" 
+              placeholder='enter' 
+              className={styles.inputbg}
+              onChange={e => setRescueDesc({...rescueDesc, reason: e.target.value})}
+              value={rescueDesc.reason}
+            />
           </div>
         </div>
         
         <div className={styles.box}>
-          <span className={styles.text}>Location:</span>
+          <span className={styles.text}>Location:*</span>
           <div className={styles.input}>
-            <input type="text" placeholder='enter' className={styles.inputbg}/>
+            <input 
+              type="text" 
+              placeholder='enter' 
+              className={styles.inputbg}
+              onChange={e => setRescueDesc({...rescueDesc, location: e.target.value})}
+              value={rescueDesc.location}
+            />
           </div>
         </div>
 
         <div className={styles.box}>
-          <span className={styles.text}>Phone No(with country code):</span>
+          <span className={styles.text}>Phone No(with country code):*</span>
           <div className={styles.input}>
-            <input type="tel" placeholder='123-456-7890' className={styles.inputbg} required/>
+            <input 
+              type="tel" 
+              placeholder='123-456-7890' 
+              className={styles.inputbg} 
+              onChange={e => setRescueDesc({...rescueDesc, phoneNo: e.target.value})}
+              value={rescueDesc.phoneNo}
+              required
+            />
+          </div>
+        </div>
+
+        <div className={styles.box}>
+          <span className={styles.text}>More Info:*</span>
+          <div className={styles.input}>
+            <input 
+              type="text" 
+              placeholder='enter' 
+              className={styles.inputbg}
+              onChange={e => setRescueDesc({...rescueDesc, moreInfo: e.target.value})}
+              value={rescueDesc.moreInfo}
+            />
           </div>
         </div>
 
@@ -144,7 +271,8 @@ function RescueDetail() {
             <input type="checkbox" />
             <label htmlFor="text" className='text-xs text-bold text-gray-400 ml-1'>I assure that the details provided are accurate</label>
           </div>
-          <Button variant='contained' className='w-10/12 h-10'>Submit</Button>
+          <Button variant='contained' onClick={submit} disabled={disabled} className='w-10/12 h-10'>Submit</Button>
+          <span className='text-sm'>{message}</span>
         </div>
       </div>
     </div>

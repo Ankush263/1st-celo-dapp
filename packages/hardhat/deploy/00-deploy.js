@@ -45,7 +45,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   await deploy("FOW", {
     from: deployer,
     log: true,
-  })
+  });
+
+  await deploy("CELO_HACK", {
+    from: deployer,
+    log: true,
+  });
 
   // Getting a previously deployed contract
   // const Greeter = new ethers.Contract("Greeter", deployer);
@@ -78,4 +83,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   */
 };
 
-module.exports.tags = ["Messenger", "Storage", "SupportToken", "CustomGreeting", "FOW"];
+module.exports.tags = ["Messenger", "Storage", "SupportToken", "CustomGreeting", "FOW", "CELO_HACK"];

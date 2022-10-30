@@ -11,6 +11,7 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
     struct RescueDetails {
         uint rescueId;
         address owner;
+        string rescueInfo;
         address rescuerAddress;
         bool rescuePickup;
         bool rescueRecieved;
@@ -20,6 +21,7 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
     struct DonationDetails {
         uint donationId;
         address owner;
+        string donationInfo;
         address donarAddress;
         bool donationPickup;
         bool NFTreceived;
@@ -28,7 +30,7 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
     }
 
     uint rescueCount = 0;
-    uint donationCount = 0;
+    uint donationCount = type(uint256).max;
 
     RescueDetails[] public AllRescueDetails;
     DonationDetails[] public AllDonationDetails;
@@ -77,6 +79,7 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
         tempRescueDetails.rescueId = rescueCount;
         tempRescueDetails.owner = owner;
         tempRescueDetails.rescuerAddress = msg.sender;
+        tempRescueDetails.rescueInfo = _rescueInfo;
 
         _safeMint(msg.sender, rescueCount);
         _setTokenURI(rescueCount, _rescueInfo);
@@ -152,13 +155,14 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
         tempDonationDetails.donationId = donationCount;
         tempDonationDetails.owner = owner;
         tempDonationDetails.donarAddress = msg.sender;
+        tempDonationDetails.donationInfo = _donationInfo;
 
         _safeMint(msg.sender, donationCount);
         _setTokenURI(donationCount, _donationInfo);
         _transfer(msg.sender, owner, donationCount);
 
         AllDonationDetails.push(tempDonationDetails);
-        donationCount++;
+        donationCount--;
     }
 
     function getAllDonationRequest() public view returns(DonationDetails[] memory) {

@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import Link from 'next/link';
+import { ethers } from 'ethers';
+import CELO from '../../../../hardhat/artifacts/contracts/CELO_HACK.sol/CELO_HACK.json';
 
 function FirstPage() {
 
+  const deployAddress = "0x301eF007bF8c7e3081CC1Ffd7F6A1Cd5b652B5b0"
+
   const [donate, setDonate] = useState(false)
   const [resque, setResque] = useState(false)
+  const [OwnerAddr, setOwnerAddr] = useState('')
+  const [currentAddr, setCurrentAddr] = useState('')
 
   const donateClick = () => {
     setDonate(true)
@@ -16,6 +22,29 @@ function FirstPage() {
     setResque(true)
     setDonate(false)
   }
+
+
+  const check = async () => {
+    try {
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const contract = new ethers.Contract(deployAddress, CELO.abi, signer)
+
+      const owner = await contract.owner()
+      const current = await signer.getAddress()
+
+      setOwnerAddr(owner)
+      setCurrentAddr(current)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    check()
+  }, [])
 
   const connectWallet = async () => {
     try {
@@ -62,32 +91,74 @@ function FirstPage() {
             <span className='font-extrabold text-2xl'>Want To Share Food?</span>
             <span className='font-bold text-sm text-gray-400'>choose one</span>
           </div>
-          <div className="w-7/12 h-3/6 flex justify-around items-start">
-            <div className="flex flex-col justify-center items-center">
-              <button className={styles.btn} onClick={donateClick}>
-                <img src="/images2/Fundraising.png" alt="/" className='w-full h-full rounded-full' />
-              </button>
-              <span className='text-xs text-gray-400 font-bold'>Donate</span>
+
+          {
+            OwnerAddr !== currentAddr 
+
+            ?
+
+            <div className="w-7/12 h-3/6 flex justify-around items-start">
+
+              <div className="flex flex-col justify-center items-center">
+                <button className={styles.btn} onClick={donateClick}>
+                  <img src="/images2/Fundraising.png" alt="/" className='w-full h-full rounded-full' />
+                </button>
+                <span className='text-xs text-gray-400 font-bold'>Donate</span>
+              </div>
+
+              <div className="flex flex-col justify-center items-center">
+                <button className={styles.btn} onClick={resqueClick}>
+                  <img src="/images2/delivery.png" alt="/" className='w-full h-full rounded-full' />
+                </button>
+                <span className='text-xs text-gray-400 font-bold'>Rescuer</span>
+              </div>
+
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <button className={styles.btn} onClick={resqueClick}>
-                <img src="/images2/delivery.png" alt="/" className='w-full h-full rounded-full' />
-              </button>
-              <span className='text-xs text-gray-400 font-bold'>Rescuer</span>
+
+            :
+
+            <div className="w-7/12 h-3/6 flex justify-around items-start">
+
+              <div className="flex flex-col justify-center items-center">
+                <button className="w-20 h-20 rounded-full">
+                  <img src="/images2/owner.png" alt="/" className='w-full h-full rounded-full' />
+                </button>
+                <span className='text-xs text-gray-400 font-bold'>Owner</span>
+              </div>
+
             </div>
-          </div>
+
+          }
+
         </div>
         <div className={styles.bottom}>
           <div className={styles.img}>
             <img src="/images2/confuse.png" className='w-full h-full' alt="/" />
           </div>
-          <div className={styles.bigbtn}>
-            {
+
+
+          {
+            OwnerAddr === currentAddr
+
+            ?
+
+            <div className={styles.bigbtn}>
+              {
+                <Link href='/components/CELO-HACK/owner/OwnerDashboard'>
+                  <Button variant='contained' className='w-9/12'>
+                    <span className='capitalize' onClick={connectWallet}>Owner Dashboard</span>
+                  </Button> 
+                </Link>
+              }
+            </div>
+
+            :
+
               donate 
               
               ? 
 
-              <Link href='/components/CELO-HACK/DonateDetails'>
+              <Link href='/components/CELO-HACK/donate/DonateDetails'>
                 <Button variant='contained' className='w-9/12'>
                   <span className='capitalize' onClick={connectWallet}>Donate some food</span>
                 </Button> 
@@ -95,12 +166,15 @@ function FirstPage() {
               
               : 
 
-              <Link href='/components/CELO-HACK/RescueDetail'>
+              <Link href='/components/CELO-HACK/rescue/RescueDetail'>
                 <Button variant='contained' className='w-9/12'>
                   <span className='capitalize' onClick={connectWallet}>Resque?</span>
                 </Button>
               </Link>
-            }
+
+          }
+
+          <div className={styles.bigbtn}>
           </div>
         </div>
       </div>

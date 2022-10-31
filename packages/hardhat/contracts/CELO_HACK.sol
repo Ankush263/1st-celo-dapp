@@ -1,12 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-
-contract CELO_HACK is ERC721, ERC721URIStorage {
-    using Counters for Counters.Counter;
+contract CELO_HACK {
 
     struct RescueDetails {
         uint rescueId;
@@ -29,41 +24,26 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
         bool donationClosed;
     }
 
+    struct NFT {
+        uint NFTId;
+        address owner;
+        string NFTinfo;
+    }
+
     uint rescueCount = 0;
-    uint donationCount = type(uint256).max;
+    uint donationCount = 0;
+    uint count = 0;
 
     RescueDetails[] public AllRescueDetails;
     DonationDetails[] public AllDonationDetails;
+    NFT[] public AllNFTs;
 
-    Counters.Counter private _tokenIdCounter;
     address payable public owner;
 
 
 
-    constructor() ERC721("MyToken", "MTK") {
+    constructor() {
         owner = payable(msg.sender);
-    }
-
-    function safeMint(address to, string memory uri) public {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
-    }
-
-    // The following functions are overrides required by Solidity.
-
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
-    }
-
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
-        return super.tokenURI(tokenId);
     }
 
     // -------------------------All Rescue Functions---------------------------------------------
@@ -80,9 +60,6 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
         tempRescueDetails.owner = owner;
         tempRescueDetails.rescuerAddress = msg.sender;
         tempRescueDetails.rescueInfo = _rescueInfo;
-
-        _safeMint(msg.sender, rescueCount);
-        _setTokenURI(rescueCount, _rescueInfo);
 
         AllRescueDetails.push(tempRescueDetails);
         rescueCount++;
@@ -157,12 +134,8 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
         tempDonationDetails.donarAddress = msg.sender;
         tempDonationDetails.donationInfo = _donationInfo;
 
-        _safeMint(msg.sender, donationCount);
-        _setTokenURI(donationCount, _donationInfo);
-        _transfer(msg.sender, owner, donationCount);
-
         AllDonationDetails.push(tempDonationDetails);
-        donationCount--;
+        donationCount++;
     }
 
     function getAllDonationRequest() public view returns(DonationDetails[] memory) {
@@ -171,7 +144,6 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
 
     function getDonationPickup(uint _donationId) public {
         require(owner == msg.sender, "Only owner can call this function");
-        require(AllDonationDetails[_donationId].NFTreceived == false);
         require(AllDonationDetails[_donationId].donationReceived == false);
         require(AllDonationDetails[_donationId].donationClosed == false);
         require(AllDonationDetails[_donationId].donationPickup == false);
@@ -179,16 +151,47 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
         AllDonationDetails[_donationId].donationPickup = true;
     }
 
-    function giveNFTtoDonar(uint _donationId) public {
-        require(owner == msg.sender, "Only owner can call this function");
-        require(AllDonationDetails[_donationId].donationPickup == true);
-        require(AllDonationDetails[_donationId].NFTreceived == false);
-        require(AllDonationDetails[_donationId].donationReceived == false);
-        require(AllDonationDetails[_donationId].donationClosed == false);
 
-        _transfer(msg.sender, AllDonationDetails[_donationId].donarAddress, _donationId);
+    function createNFT
+    (
+        uint _donationId,
+        string memory _NFTinfo
+
+    ) public {
+        require(owner == msg.sender);
+        NFT memory tempNFTs;
+
+        tempNFTs.NFTId = count;
+        tempNFTs.owner = AllDonationDetails[_donationId].donarAddress;
+        tempNFTs.NFTinfo = _NFTinfo;
+
+        AllNFTs.push(tempNFTs);
         AllDonationDetails[_donationId].NFTreceived = true;
+        count++;
     }
+
+    function getAllMyNFT() public view returns(NFT[] memory) {
+        uint totalNFT = count;
+        uint nft = 0;
+        uint currentIndex = 0;
+
+        for(uint i = 0; i < totalNFT; i++) {
+            if(AllNFTs[i].owner == msg.sender) {
+                nft++;
+            }
+        }
+
+        NFT[] memory nftOwner = new NFT[](nft);
+        for(uint i = 0; i < totalNFT; i++) {
+            if(AllNFTs[i].owner == msg.sender) {
+                nftOwner[currentIndex] = AllNFTs[i];
+                currentIndex++;
+            }
+        }
+
+        return nftOwner;
+    }
+    
 
     function getDonationReceived(uint _donationId) public {
         require(owner == msg.sender, "Only owner can call this function");
@@ -233,7 +236,4 @@ contract CELO_HACK is ERC721, ERC721URIStorage {
     }
 
     
-
-
-
 }

@@ -144,7 +144,7 @@ function FirstPage() {
 
             <div className={styles.bigbtn}>
               {
-                <Link href='/components/CELO-HACK/owner/OwnerDashboard'>
+                <Link href='/components/CELO-HACK/owner/OwnerOption'>
                   <Button variant='contained' className='w-9/12'>
                     <span className='capitalize' onClick={connectWallet}>Owner Dashboard</span>
                   </Button> 

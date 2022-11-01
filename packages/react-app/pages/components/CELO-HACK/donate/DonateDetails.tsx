@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 function DonateDetails() {
 
-  const deployAddress = "0x301eF007bF8c7e3081CC1Ffd7F6A1Cd5b652B5b0"
+  const deployAddress = "0x39C4E511cCC5a823dB73bed64dd788274CECF687"
 
   const [donationDesc, setDonationDesc] = useState({
     language: '',
@@ -94,6 +94,7 @@ function DonateDetails() {
       alert("Successfully send the request😀")
       setDisabled(false)
       setMessage('')
+      window.location.replace("/components/CELO-HACK/donate/MyDonations")
 
     } catch (error) {
       console.log(error)

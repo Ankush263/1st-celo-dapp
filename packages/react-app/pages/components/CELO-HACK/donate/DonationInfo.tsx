@@ -12,7 +12,6 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 function DonationInfo(props: any) {
 
-
   const styles = {
     box: `w-full h-full flex flex-col justify-around items-start ease-in duration-500`,
     bg: `border-2 w-14 p-2 rounded-xl border-sky-600`,

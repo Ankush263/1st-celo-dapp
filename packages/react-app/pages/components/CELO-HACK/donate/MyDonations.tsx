@@ -3,10 +3,11 @@ import { Button } from '@mui/material';
 import { ethers } from 'ethers';
 import CELO from '@celo-composer/hardhat/artifacts/contracts/CELO_HACK.sol/CELO_HACK.json';
 import DonationCard from './DonationCard';
+import Link from 'next/link';
 
 function MyDonations() {
 
-  const deployAddress = "0x301eF007bF8c7e3081CC1Ffd7F6A1Cd5b652B5b0"
+  const deployAddress = "0x39C4E511cCC5a823dB73bed64dd788274CECF687"
 
   const sample = [
     {
@@ -22,7 +23,7 @@ function MyDonations() {
       const signer = provider.getSigner()
       const contract = new ethers.Contract(deployAddress, CELO.abi, signer)
 
-      const allDonation = await contract.getAllDonationRequest()
+      const allDonation = await contract.getAllMyDonationDetails()
 
       const items: any = await Promise.all(allDonation.map(async (i: any) => {
         let item = {
@@ -30,6 +31,7 @@ function MyDonations() {
           donationInfo: i.donationInfo,
           donarAddress: i.donarAddress,
           donationPickup: i.donationPickup,
+          NFTreceived: i.NFTreceived,
           donationReceived: i.donationReceived,
           donationClosed: i.donationClosed
         }
@@ -48,13 +50,18 @@ function MyDonations() {
   }, [])
 
   const styles = {
-    page: `w-screen max-w-screen-sm min-h-screen flex flex-col justify-center items-start`,
+    page: `w-screen max-w-screen-sm min-h-screen flex flex-col justify-center items-center`,
   }
 
 
   return (
     <div className="flex justify-center items-center">
       <div className={styles.page}>
+        <Link href="/components/CELO-HACK/donate/MyNFTs">
+          <Button variant='contained' size='small'>
+            <span className='text-sm capitalize'>Show My NFT's</span>
+          </Button>
+        </Link>
         {data.map((value, index) => {
             return <DonationCard data={value} key={index} />
         })}

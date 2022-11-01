@@ -4,9 +4,6 @@ import DonationInfo from './DonationInfo';
 
 function DonationCard(props: any) {
 
-  const ID = 115792089237316195423570985008687907853269984665640564039457584007913129639935
-
-
   const [donationData, setDonationData] = useState({})
   const [click, setClick] = useState(false)
 
@@ -43,7 +40,7 @@ function DonationCard(props: any) {
         }
       </div>
       <div className="w-full flex justify-around items-center">
-        {/* <span className='text-sm font-bold text-gray-500'>Donation Id: {ID - Number(props.data.donationId)}</span> */}
+        <span className='text-sm font-bold text-gray-500'>Donation Id: {props.data.donationId}</span>
         <Button variant='contained'>
           <span className='text-sm capitalize' onClick={fetchData}>{!click ? "see details" : "hide details"}</span>
         </Button>

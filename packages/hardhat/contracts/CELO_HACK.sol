@@ -46,6 +46,11 @@ contract CELO_HACK {
         owner = payable(msg.sender);
     }
 
+    function transferOwnership(address _newOwner) public {
+        require(msg.sender == owner);
+        owner = payable(_newOwner);  
+    }
+
     // -------------------------All Rescue Functions---------------------------------------------
 
     function SendRescueRequest

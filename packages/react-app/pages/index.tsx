@@ -153,7 +153,7 @@ import Image from 'next/image'
 import SignInPage from "./components/SignInPage";
 import FirstPage from './components/CELO-HACK/FirstPage';
 import RescueDetail from './components/CELO-HACK/rescue/RescueDetail';
-import PaymentComplete from './components/CELO-HACK/PaymentComplete';
+import PaymentComplete from './components/CELO-HACK/rescue/PaymentComplete';
 import DonateDetails from './components/CELO-HACK/donate/DonateDetails';
 
 

@@ -5,7 +5,12 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'transform-origin': 'top center',
+        'animation': 'slideDown 300ms (num * 60ms) ease-in-out forwards',
+      }
+    },
   },
   plugins: [],
 }

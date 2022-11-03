@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { ethers } from 'ethers';
 import CELO from '@celo-composer/hardhat/artifacts/contracts/CELO_HACK.sol/CELO_HACK.json';
-import NFTCard from './NFTCard'
+import NFTCard from './NFTCard';
+import Link from 'next/link';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HomeIcon from '@mui/icons-material/Home';
 
 function MyNFTs() {
 
-  const deployAddress = "0x39C4E511cCC5a823dB73bed64dd788274CECF687"
+  const deployAddress = "0x18bAe5571f34B1c965d1314c339a79f8F364eD78"
 
   const sample = [
     {
@@ -50,11 +53,22 @@ function MyNFTs() {
 
 
   return (
+    <div className="flex flex-col justify-center items-center bg-slate-900">
+      <div className="w-full flex justify-between">
+        <Link href="/components/CELO-HACK/donate/MyDonations">
+          <ArrowBackIcon fontSize='large' color='primary' />
+        </Link>
+
+        <Link href="/">
+          <HomeIcon fontSize='large' color='primary' />
+        </Link>
+      </div>
       <div className={styles.page}>
         {data.map((value, index) => {
             return <NFTCard data={value} key={index} />
         })}
       </div>
+    </div>
   )
 }
 

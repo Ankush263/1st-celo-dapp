@@ -8,10 +8,12 @@ import { uploadDonateJSONtoIPFS, uploadFileToIPFS } from '../../../../utils/pina
 import { ethers } from 'ethers';
 import CELO from '@celo-composer/hardhat/artifacts/contracts/CELO_HACK.sol/CELO_HACK.json';
 import Link from 'next/link';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HomeIcon from '@mui/icons-material/Home';
 
 function DonateDetails() {
 
-  const deployAddress = "0x39C4E511cCC5a823dB73bed64dd788274CECF687"
+  const deployAddress = "0x18bAe5571f34B1c965d1314c339a79f8F364eD78"
 
   const [donationDesc, setDonationDesc] = useState({
     language: '',
@@ -94,7 +96,7 @@ function DonateDetails() {
       alert("Successfully send the request😀")
       setDisabled(false)
       setMessage('')
-      window.location.replace("/components/CELO-HACK/donate/MyDonations")
+      window.location.replace("/components/CELO-HACK/donate/PaymentComplete")
 
     } catch (error) {
       console.log(error)
@@ -102,16 +104,25 @@ function DonateDetails() {
   }
 
   const styles = {
-    page: `w-screen max-w-screen-sm h-screen flex flex-col justify-start items-center`,
+    page: `w-screen max-w-screen-sm h-screen flex flex-col justify-start items-center bg-slate-900`,
     head: `w-full h-20 flex justify-between items-center`,
     box: `w-11/12 h-16`,
-    text: `text-sm font-bold `,
+    text: `text-sm font-bold text-white`,
     input: `bg-slate-300/[.9] shadow-2xl border-white-900/75 w-full h-7`,
     inputbg: `w-full h-full bg-inherit pl-2 placeholder:text-sm`,
   }
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex flex-col justify-center items-center bg-slate-900">
+      <div className="w-full flex justify-between">
+        <Link href="/">
+          <ArrowBackIcon fontSize='large' color='primary' />
+        </Link>
+
+        <Link href="/">
+          <HomeIcon fontSize='large' color='primary' />
+        </Link>
+      </div>
       <div className={styles.page}>
         <div className={styles.head}>
           <span className='text-2xl font-bold text-sky-600'>Donate Details</span>
@@ -301,7 +312,7 @@ function DonateDetails() {
           </div>
         </div>
 
-        <div className="w-full h-2/6 flex flex-col justify-between items-center">
+        <div className="w-full h-2/6 flex flex-col justify-between items-center bg-slate-900">
           <div className="w-full h-4/6 flex flex-col justify-around items-center">
             <span className={styles.text}>Photos:{imgUrl && "Uploded!!!"}</span>
             <IconButton color="primary" aria-label="upload picture" component="label">
@@ -316,7 +327,7 @@ function DonateDetails() {
           <div className="w-full h-1/5 flex justify-center mb-2">
             <Button variant='contained' disabled={disabled} onClick={submit} className='w-10/12 h-10'>Submit</Button>
           </div>
-            <span className='text-sm'>{message}</span>
+            <span className='text-sm text-white'>{message}</span>
         </div>
       </div>
     </div>

@@ -6,10 +6,11 @@ import CELO from '../../../../hardhat/artifacts/contracts/CELO_HACK.sol/CELO_HAC
 
 function FirstPage() {
 
-  const deployAddress = "0x39C4E511cCC5a823dB73bed64dd788274CECF687"
+  const deployAddress = "0x18bAe5571f34B1c965d1314c339a79f8F364eD78"
 
   const [donate, setDonate] = useState(false)
   const [resque, setResque] = useState(false)
+  const [click, setClick] = useState(false)
   const [OwnerAddr, setOwnerAddr] = useState('')
   const [currentAddr, setCurrentAddr] = useState('')
 
@@ -61,6 +62,7 @@ function FirstPage() {
       if (typeof window.ethereum !== 'undefined') {
         window.ethereum.request({ method: 'eth_requestAccounts' });
       }
+      setClick(true)
 
     } catch (error) {
       console.log(error)
@@ -68,7 +70,7 @@ function FirstPage() {
   }
 
   const styles = {
-    page: `w-screen h-screen flex flex-col justify-between items-center max-w-screen-sm bg-[url('/images2/background.png')]`,
+    page: `w-screen h-screen flex flex-col justify-between items-center max-w-screen-sm bg-slate-900 bg-[url('/images2/bg3.png')]`,
     top: `w-full h-2/6 flex justify-center items-center`,
     mid: `w-full h-2/6 flex flex-col justify-between items-center`,
     bottom: `w-full h-1/4 flex flex-col justify-center items-center`,
@@ -93,6 +95,7 @@ function FirstPage() {
           </div>
 
           {
+
             OwnerAddr !== currentAddr 
 
             ?
@@ -124,6 +127,18 @@ function FirstPage() {
                   <img src="/images2/owner.png" alt="/" className='w-full h-full rounded-full' />
                 </button>
                 <span className='text-xs text-gray-400 font-bold'>Owner</span>
+
+                {
+                  click 
+
+                  &&
+
+                  <Link href="/components/CELO-HACK/ChangeOwner">
+                    <Button variant='contained' className='w-full' color="error">
+                      <span className='capitalize'>Change Ownership</span>
+                    </Button>
+                  </Link>
+                }
               </div>
 
             </div>
@@ -138,6 +153,16 @@ function FirstPage() {
 
 
           {
+            !click 
+
+            ?
+
+            <Button variant='contained' className='w-9/12'>
+              <span className='capitalize' onClick={connectWallet}>Connect Wallet</span>
+            </Button> 
+
+            :
+
             OwnerAddr === currentAddr
 
             ?

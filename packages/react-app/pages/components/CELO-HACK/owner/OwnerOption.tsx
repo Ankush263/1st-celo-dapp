@@ -18,7 +18,7 @@ function OwnerOption() {
   }
 
   const styles = {
-    page: `w-screen h-screen flex flex-col justify-between items-center max-w-screen-sm bg-[url('/images2/background.png')]`,
+    page: `w-screen h-screen flex flex-col justify-between items-center max-w-screen-sm bg-[url('/images2/bg3.png')]`,
     top: `w-full h-2/6 flex justify-center items-center`,
     mid: `w-full h-2/6 flex flex-col justify-between items-center`,
     bottom: `w-full h-1/4 flex flex-col justify-center items-center`,
@@ -72,7 +72,7 @@ function OwnerOption() {
               
             ? 
 
-            <Link href='/components/CELO-HACK/owner/rescueReq/RescuerRequest'>
+            <Link href='/components/CELO-HACK/owner/donarReq/DonarReq'>
               <Button variant='contained' className='w-9/12'>
                 <span className='capitalize'>See the Donar request</span>
               </Button> 

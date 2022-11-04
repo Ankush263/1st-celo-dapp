@@ -6,7 +6,7 @@ import ItemCard from './ItemCard';
 
 function OwnerDashboard() {
 
-  const deployAddress = "0x39C4E511cCC5a823dB73bed64dd788274CECF687"
+  const deployAddress = "0x18bAe5571f34B1c965d1314c339a79f8F364eD78"
 
   const sample = [
     {

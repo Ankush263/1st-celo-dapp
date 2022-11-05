@@ -44,6 +44,9 @@ function FirstPage() {
   }
 
   useEffect(() => {
+    window.ethereum.on('accountsChanged', (accounts) => {
+      window.location.reload()
+    })
     check()
   }, [])
 

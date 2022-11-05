@@ -159,7 +159,7 @@ import DonateDetails from './components/CELO-HACK/donate/DonateDetails';
 
 const Home: NextPage = () => {
   return (
-    <div className="app">
+    <div className="bg-slate-900">
       <FirstPage />
       {/* <RescueDetail /> */}
       {/* <PaymentComplete /> */}

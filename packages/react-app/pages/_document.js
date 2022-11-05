@@ -13,7 +13,7 @@ class MyDocument extends Document {
           />
           <meta name="theme-color" content="#fff" />
         </Head>
-        <body>
+        <body className="bg-slate-900">
           <Main />
           <NextScript />
         </body>

@@ -14,15 +14,40 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import { ethers } from 'ethers';
 import CELO from '../../../../../../hardhat/artifacts/contracts/CELO_HACK.sol/CELO_HACK.json';
+import { GetStaticProps } from 'next';
 
+
+
+export const getStaticProps: GetStaticProps = async(contex) => {
+
+  return {
+    revalidate: 5,
+    props: {
+      data: {
+        language: '',
+        name: '',
+        numberOfPeople: '',
+        ageGroup: '',
+        reason: '',
+        location: '',
+        phoneNo: '',
+        moreInfo: ''
+      },
+      value: {
+        rescueId: 0,
+        rescuePickup: false,
+        rescueClosed: false,
+        rescueRecieved: false
+      }
+    }
+  }
+
+}
 
 function RescueInfo(props: any) {
 
-  const deployAddress = "0x18bAe5571f34B1c965d1314c339a79f8F364eD78"
+  const deployAddress = "0x813B8a84A802aAdA2A873a8cbcAa703BEE9f68C4"
 
-  const provider = new ethers.providers.Web3Provider(window.ethereum)
-  const signer = provider.getSigner()
-  const contract = new ethers.Contract(deployAddress, CELO.abi, signer)
 
   const [click1, setClick1] = useState(false)
   const [click2, setClick2] = useState(false)
@@ -35,11 +60,17 @@ function RescueInfo(props: any) {
     setClick1(true)
     updateMessage1('processing!!!')
     try {
-      const tx = await contract.getRescuePickup(props.value.rescueId)
-      await tx.wait()
-      updateMessage1('')
-      setClick1(false)
-      window.location.reload()
+      if(typeof window !== 'undefined') {
+        
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const signer = provider.getSigner()
+        const contract = new ethers.Contract(deployAddress, CELO.abi, signer)
+        const tx = await contract.getRescuePickup(props.value.rescueId)
+        await tx.wait()
+        updateMessage1('')
+        setClick1(false)
+        window.location.reload()
+      }
     } catch (error) {
       console.log(error)
     }
@@ -49,11 +80,17 @@ function RescueInfo(props: any) {
     updateMessage2('processing!!!')
     setClick2(true)
     try {
-      const tx = await contract.getRescueRecieved(props.value.rescueId)
-      await tx.wait()
-      updateMessage2('')
-      setClick2(false)
-      window.location.reload()
+      if(typeof window !== 'undefined') {
+        
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const signer = provider.getSigner()
+        const contract = new ethers.Contract(deployAddress, CELO.abi, signer)
+        const tx = await contract.getRescueRecieved(props.value.rescueId)
+        await tx.wait()
+        updateMessage2('')
+        setClick2(false)
+        window.location.reload()
+      }
     } catch (error) {
       console.log(error)
       alert("first confirm the pick up")
@@ -64,11 +101,17 @@ function RescueInfo(props: any) {
     updateMessage3('processing!!!')
     setClick3(true)
     try {
-      const tx = await contract.getRescueClosed(props.value.rescueId)
-      await tx.wait()
-      updateMessage3('')
-      setClick3(false)
-      window.location.reload()
+      if(typeof window !== 'undefined') {
+        
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
+        const signer = provider.getSigner()
+        const contract = new ethers.Contract(deployAddress, CELO.abi, signer)
+        const tx = await contract.getRescueClosed(props.value.rescueId)
+        await tx.wait()
+        updateMessage3('')
+        setClick3(false)
+        window.location.reload()
+      }
     } catch (error) {
       console.log(error)
       alert("first confirm the received")
@@ -100,26 +143,6 @@ function RescueInfo(props: any) {
 
       <div className={styles.subBox}>  
         <div className={styles.bg}>
-          <GroupsIcon fontSize='large' color='primary' />
-        </div>
-        <div className={styles.textBox}>
-          <span className={styles.dark}>Age group:</span>
-          <span className='font-bold'>{props.data.ageGroup}</span>
-        </div>
-      </div>
-
-      <div className={styles.subBox}>  
-        <div className={styles.bg}>
-          <PeopleAltIcon fontSize='large' color='primary' />
-        </div>
-        <div className={styles.textBox}>
-          <span className={styles.dark}>Number of people:</span>
-          <span className='font-bold'>{props.data.numberOfPeople}</span>
-        </div>
-      </div>
-
-      <div className={styles.subBox}>  
-        <div className={styles.bg}>
           <TranslateIcon fontSize='large' color='primary' />
         </div>
         <div className={styles.textBox}>
@@ -139,6 +162,64 @@ function RescueInfo(props: any) {
           <div className="font-bold">
             {props.data.location}
           </div>
+        </div>
+      </div>
+
+      <div className={styles.subBox}>  
+        <div className={styles.bg}>
+          <PeopleAltIcon fontSize='large' color='primary' />
+        </div>
+        <div className={styles.textBox}>
+          <span className={styles.dark}>Total Number of people:</span>
+          <span className='font-bold'>{props.data.numberOfPeople}</span>
+        </div>
+      </div>
+
+      <div className={styles.subBox}>  
+        <div className={styles.bg}>
+          <GroupsIcon fontSize='large' color='primary' />
+        </div>
+        <div className={styles.textBox}>
+          <span className={styles.dark}>Age less then 1 year:</span>
+          <span className='font-bold'>{props.data.lessthen1}</span>
+        </div>
+      </div>
+
+      <div className={styles.subBox}>  
+        <div className={styles.bg}>
+          <GroupsIcon fontSize='large' color='primary' />
+        </div>
+        <div className={styles.textBox}>
+          <span className={styles.dark}>Age from 1 to 5 year:</span>
+          <span className='font-bold'>{props.data.oneTofive}</span>
+        </div>
+      </div>
+
+      <div className={styles.subBox}>  
+        <div className={styles.bg}>
+          <GroupsIcon fontSize='large' color='primary' />
+        </div>
+        <div className={styles.textBox}>
+          <span className={styles.dark}>Age from 6 to 13 year:</span>
+          <span className='font-bold'>{props.data.sixTothirteen}</span>
+        </div>
+      </div>
+      <div className={styles.subBox}>  
+        <div className={styles.bg}>
+          <GroupsIcon fontSize='large' color='primary' />
+        </div>
+        <div className={styles.textBox}>
+          <span className={styles.dark}>For Adults:</span>
+          <span className='font-bold'>{props.data.forAdults}</span>
+        </div>
+      </div>
+      <div className={styles.subBox}>  
+        <div className={styles.bg}>
+          <GroupsIcon fontSize='large' color='primary' />
+        </div>
+        <div className={styles.textBox}>
+          <span className={styles.dark}>For above 60 year:</span>
+          <span className='font-bold'>{props.data.above60}</span>
         </div>
       </div>
 
@@ -190,7 +271,7 @@ function RescueInfo(props: any) {
               ?
               <CheckCircleIcon fontSize='large' color='success' />
               :
-              <Button variant='contained' size='small' onClick={pickUp}>
+              <Button variant='contained' size='small' onClick={pickUp} className="bg-sky-700">
                 <span className='text-sm capitalize'>Rescue pick up</span>
               </Button>
             }
@@ -211,7 +292,7 @@ function RescueInfo(props: any) {
               ?
               <CheckCircleIcon fontSize='large' color='success' />
               :
-              <Button variant='contained'  size='small' onClick={received}>
+              <Button variant='contained'  size='small' onClick={received} className="bg-sky-700">
                 <span className='text-sm capitalize'>received</span>
               </Button>
             }
@@ -232,7 +313,7 @@ function RescueInfo(props: any) {
               ?
               <CheckCircleIcon fontSize='large' color='success' />
               :
-              <Button variant='contained'  size='small' onClick={close}>
+              <Button variant='contained'  size='small' onClick={close} className="bg-sky-700">
                 <span className='text-sm capitalize'>close</span>
               </Button>
             }
